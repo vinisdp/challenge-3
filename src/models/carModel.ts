@@ -1,24 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { ICar } from '../interfaces/interfaceCar';
+import Joi from 'joi';
 
 
 const CarSchema = new Schema({
-    model: {
-        type: String,
-        required: [true, 'Please enter your name'],
-    },
-    color: {
-        type: String,
-        required: [true, 'Please enter your cpf'],
-    },
-    year: {
-        type: Date,
-        required: [true],
-    },
-    value_per_day: {
-        type: Number,
-        required: [true, 'Please provide your email'],
-    },
+    model: Joi.string().required(),
+    color: Joi.string().required(),
+    year: Joi.number().required(),
+    value_per_day: Joi.number().required(),
 });
 
 export default mongoose.model<ICar>('Car', CarSchema);

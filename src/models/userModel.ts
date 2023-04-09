@@ -1,16 +1,41 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { IUser } from '../interfaces/interfaceUser';
-import Joi from 'joi';
 
 const UserSchema = new Schema({
-    name: Joi.string().required(),
-    cpf: Joi.string().min(11).max(14).required(),
-    birth: Joi.date().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
-    cep: Joi.string().min(8).max(9).required(),
-    qualified: Joi.string().min(3).max(3).required(),
+    name: {
+        type: String,
+        required: [true, 'Please enter your name'],
+    },
+    cpf: {
+        type: String,
+        required: [true, 'Please enter your cpf'],
+    },
+    birth: {
+        type: Date,
+        required: [true],
+    },
+    email: {
+        type: String,
+        required: [true, 'Please provide your email'],
+        unique: true,
+        lowercase: true,
+    },
+    password: {
+        type: String,
+        required: [true, 'Please provide your password'],
+        minLenght: 8,
+        select: false,
+    },
+    cep: {
+        type: String,
+        required: [true, 'Please enter your cep'],
+    },
+    qualified: {
+        type: String,
+        required: [true, 'Please enter client is qualified'],
+    },
+    passwordChangedAt: Date,
 });
 
 UserSchema.pre<IUser>('save', async function (next) {

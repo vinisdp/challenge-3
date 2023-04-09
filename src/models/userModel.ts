@@ -1,15 +1,15 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { IUser } from '../interfaces/interfaceUser';
 import Joi from 'joi';
 
 const UserSchema = new Schema({
     name: Joi.string().required(),
-    cpf: Joi.string().required(),
+    cpf: Joi.string().min(11).max(14).required(),
     birth: Joi.date().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
-    cep: Joi.string().required(),
+    cep: Joi.string().min(8).max(9).required(),
     qualified: Joi.string().min(3).max(3).required(),
 });
 

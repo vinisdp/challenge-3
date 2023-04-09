@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { ICar } from '../interfaces/interfaceCar';
 import Joi from 'joi';
 

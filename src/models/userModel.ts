@@ -3,25 +3,17 @@ import bcrypt from 'bcryptjs';
 import { IUser } from '../interfaces/interfaceUser';
 
 const UserSchema = new Schema({
-    firstName: {
+    name: {
         type: String,
-        required: [true, 'Please enter your first name'],
+        required: [true, 'Please enter your name'],
     },
-    lastName: {
+    cpf: {
         type: String,
-        required: [true, 'Please enter your last name'],
+        required: [true, 'Please enter your cpf'],
     },
-    birthDate: {
+    birth: {
         type: Date,
         required: [true],
-    },
-    city: {
-        type: String,
-        required: [true, 'Please enter your city'],
-    },
-    country: {
-        type: String,
-        required: [true, 'Please enter your country'],
     },
     email: {
         type: String,
@@ -35,10 +27,13 @@ const UserSchema = new Schema({
         minLenght: 8,
         select: false,
     },
-    confirmPassword: {
+    cep: {
         type: String,
-        required: [true, 'Please confirm your password'],
-        select: false,
+        required: [true, 'Please enter your cep'],
+    },
+    qualified: {
+        type: String,
+        required: [true, 'Please enter client is qualified'],
     },
     passwordChangedAt: Date,
 });
@@ -51,7 +46,6 @@ UserSchema.pre<IUser>('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
 
     // Delete passwordConfirm field
-    this.confirmPassword = '';
     next();
 });
 

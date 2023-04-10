@@ -2,7 +2,7 @@ import { ICar } from "../interfaces/interfaceCar";
 import carRepository from "../repositories/carRepository";
 
 
-class EventService {
+class CarService {
     public async findAll(): Promise<ICar[]> {
         return carRepository.findAll();
     }
@@ -20,4 +20,4 @@ class EventService {
     }
 }
 
-export default new EventService();
+export default new CarService();

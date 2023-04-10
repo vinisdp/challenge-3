@@ -17,6 +17,8 @@
 <h3>Step 1:</h3>
 <p>Run the following command:</p>
 <code>npm install</code>
+  
+<h3>Step 2:</h3>
 <p>To set up the TypeScript Compiler (tsc) in a TypeScript API, you need to follow these steps:
 
 Install TypeScript: Make sure you have TypeScript installed globally on your system. You can install it using the following command: <code>npm install -g typescript</code>.

@@ -1,22 +1,22 @@
 import { ICar } from "../interfaces/interfaceCar";
-import carRepository from "../repositories/carRepository";
+import CarRepository from "../repositories/carRepository";
 
 
 class CarService {
     public async findAll(): Promise<ICar[]> {
-        return carRepository.findAll();
+        return CarRepository.findAll();
     }
 
     public async findById(id: string): Promise<ICar | null> {
-        return carRepository.findById(id);
+        return CarRepository.findById(id);
     }
 
     public async create(event: ICar): Promise<ICar> {
-        return carRepository.create(event);
+        return CarRepository.create(event);
     }
 
     public async deleteById(id: string): Promise<any> {
-        return carRepository.delete(id);
+        return CarRepository.delete(id);
     }
 }
 

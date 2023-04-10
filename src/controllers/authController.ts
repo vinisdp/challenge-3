@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/appErrors';
+import { validateSingup } from '../validations/userValidation';
 
 //Não esquecer de verificar o nome do JWT_SECRET no .env
 // const JWT_SECRET = process.env.JWT_SECRET!;
@@ -29,8 +30,9 @@ class AuthController {
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         // Extrai o email e a senha do corpo da requisição
         const { email, password } = req.body;
-
-        if (!email || !password) {
+        console.log(email, password);
+        const valid = validateSingup(req.body);
+        if (valid) {
             next(new AppError('Please provide email and password', 400));
         }
 

@@ -35,7 +35,6 @@ const UserSchema = new Schema({
         type: String,
         required: [true, 'Please enter client is qualified'],
     },
-    passwordChangedAt: Date,
 });
 
 UserSchema.pre<IUser>('save', async function (next) {
@@ -49,24 +48,8 @@ UserSchema.pre<IUser>('save', async function (next) {
     next();
 });
 
-UserSchema.pre<IUser>('save', async function (next) {
-    if (!this.isModified('password')) return next();
-
-    this.passwordChangedAt = new Date(Date.now() - 1000);
-    next();
-});
-
 UserSchema.methods.isCorrectPassword = async function (candidatePassword: string, userPassword: string) {
     return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-UserSchema.methods.changedPasswordAfter = function (this: IUser, JWTTimestamp: number) {
-    if (this.passwordChangedAt) {
-        const changedTimestamp = parseInt((this.passwordChangedAt.getTime() / 1000).toString(), 10);
-        return JWTTimestamp < changedTimestamp;
-    }
-
-    // FALSE means not changed
-    return false;
-};
 export default mongoose.model<IUser>('User', UserSchema);

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/appErrors';
-import { validateSingup } from '../validations/userValidation';
+import { validateSingUp } from '../validations/userValidation';
 
 //Não esquecer de verificar o nome do JWT_SECRET no .env
 // const JWT_SECRET = process.env.JWT_SECRET!;
@@ -28,14 +28,13 @@ interface AuthRequest extends Request {
 
 class AuthController {
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
-        // Extrai o email e a senha do corpo da requisição
-        const { email, password } = req.body;
-        console.log(email, password);
-        const valid = validateSingup(req.body);
-        if (valid) {
+
+        const valid = validateSingUp(req.body);
+        console.log(valid);
+        if (valid.error) {
             next(new AppError('Please provide email and password', 400));
         }
-
+        const { email, password } = req.body;
         const user = await User.findOne({ email }).select('+password');
 
         if (!user || !(await user.isCorrectPassword(password, user.password))) {
@@ -80,14 +79,13 @@ class AuthController {
 
     public async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
         const newUser = await User.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            birthDate: req.body.birthDate,
-            city: req.body.city,
-            country: req.body.country,
+            name: req.body.name,
+            cpf: req.body.cpf,
+            birth: req.body.birth,
             email: req.body.email,
             password: req.body.password,
-            confirmPassword: req.body.confirmPassword,
+            cep: req.body.cep,
+            qualified: req.body.qualified,
         });
 
         const token = signToken(newUser._id);

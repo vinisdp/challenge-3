@@ -13,7 +13,6 @@ export interface IUser extends Document {
     neighborhood: string;
     locality: string;
     uf: string;
-    passwordChangedAt: Date;
     isCorrectPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
     changedPasswordAfter(this: IUser, JWTTimestamp: number): boolean;
 }

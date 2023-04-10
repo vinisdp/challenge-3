@@ -2,47 +2,53 @@ import { Request, Response, NextFunction } from 'express';
 import { IReserve } from '../interfaces/interfaceReserve';
 import AppError from '../utils/appErrors';
 import ReserveService from '../services/reserveService';
+import { validateCreateReserve } from '../validations/reserveValidation';
 
 
 
 class ReserveController {
     public async findAll(req: Request, res: Response): Promise<void> {
 
-        const events = await ReserveService.findAll();
+        const reservations = await ReserveService.findAll();
 
         res.status(200).json({
             status: 'success',
-            results: events.length,
+            results: reservations.length,
             data: {
-                data: events,
+                data: reservations,
             },
         });
     }
 
     public async findById(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
-        const event = await ReserveService.findById(id);
+        const reserve = await ReserveService.findById(id);
 
-        if (!event) {
+        if (!reserve) {
             return next(new AppError('No document found with this id', 404));
         }
 
         res.status(200).json({
             status: 'success',
             data: {
-                data: event,
+                data: reserve,
             },
         });
     }
 
-    public async create(req: Request, res: Response) {
-        const event = req.body as IReserve;
-        const createdEvent = await ReserveService.create(event);
+    public async create(req: Request, res: Response, next: NextFunction) {
+        const valid = validateCreateReserve(req.body);
+        if (valid.error) {
+            next(new AppError('Please provide valid informations', 400));
+        }
+
+        const reserve = req.body as IReserve;
+        const createdReserve = await ReserveService.create(reserve);
 
         res.status(201).json({
             status: 'success',
             data: {
-                data: createdEvent,
+                data: createdReserve,
             },
         });
     }

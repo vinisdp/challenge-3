@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/appErrors';
-import { validateSingUp } from '../validations/userValidation';
+import { validateSingIn, validateUser } from '../validations/userValidation';
 
 //Não esquecer de verificar o nome do JWT_SECRET no .env
 // const JWT_SECRET = process.env.JWT_SECRET!;
@@ -29,7 +29,7 @@ interface AuthRequest extends Request {
 class AuthController {
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-        const valid = validateSingUp(req.body);
+        const valid = validateSingIn(req.body);
         console.log(valid);
         if (valid.error) {
             next(new AppError('Please provide email and password', 400));
@@ -78,6 +78,10 @@ class AuthController {
     };
 
     public async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const valid = validateUser(req.body);
+        if (valid.error) {
+            next(new AppError('Please provide valid informations', 400));
+        }
         const newUser = await User.create({
             name: req.body.name,
             cpf: req.body.cpf,
@@ -104,3 +108,5 @@ class AuthController {
 }
 
 export default new AuthController();
+
+

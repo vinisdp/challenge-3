@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { IReserve } from '../interfaces/interfaceReserve';
 import AppError from '../utils/appErrors';
+import ReserveService from '../services/reserveService';
 
 
 
-class CarController {
+class ReserveController {
     public async findAll(req: Request, res: Response): Promise<void> {
 
         const events = await ReserveService.findAll();
@@ -61,4 +62,4 @@ class CarController {
     }
 }
 
-export default new CarController();
+export default new ReserveController();

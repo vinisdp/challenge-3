@@ -11,6 +11,7 @@ export const validateSingup = (singUp: { email: string, password: string }) => {
 }
 
 export const validadeUser = (user: IUser) => {
+
     const userSchema = Joi.object<IUser>({
         name: Joi.string().required(),
         cpf: Joi.string().min(11).max(14).required(),
